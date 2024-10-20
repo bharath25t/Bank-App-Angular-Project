@@ -1,0 +1,137 @@
+<!-- <div class="text-info">
+    <h6>{{sDetails | date:"short"}}</h6>
+</div> -->
+
+<div style="display:flex ;width: 100%;justify-content:end ;gap: 40px;margin-top: -81px;
+margin-bottom: 37px; " >
+    <div class="text-end" >
+        <button (click)="deleteAcc()" class="btn btn-danger">delete</button>
+    </div>
+    <div class="text-end">
+        <button (click)="logout()" class="btn btn-secondary">logout</button>
+    </div>
+    
+  
+</div>
+<app-delete (onDelete)="ondeleteAcc($event)" (onCancel)="cancelChild()" [item]="acno"></app-delete>
+
+
+<div [ngClass]="acno?'s1':''" class="text-end">
+    <a class="view" routerLink="/transaction">View Transaction History</a>
+
+</div>
+
+<div [ngClass]="acno?'s1':''" class="row">
+
+    <div class="col-lg-4 col-md-6 col-sm-12 dashdiv1">
+
+        <div class="card1 mt-5">
+            <div class="card__front card__part">
+                <div style="display:flex; justify-content:space-between">
+                    <h4 class="text-white">WELCOME</h4>
+                    <h5 class="text-white text-uppercase">{{user}}</h5>
+                </div>
+                <p class="card_number">{{sDetails | date:"short"}}</p>
+                <div class="card__space-75">
+                    <span class="card__label ">Your Balance:</span>
+                    <p class="card__info">&#8377; 8243</p>
+
+                </div>
+
+                <div class="card__space-25 mb-3">
+                    <span class="card__label">Expires</span>
+                    <p class="card__info">10/25</p>
+                </div>
+                <span class="card__label mb-5  atmclick ">Check the account details</span>
+
+            </div>
+
+            <div class="card__back card__part">
+                <div class="card__black-line"></div>
+                <div class="card__back-content">
+
+
+                    <h6 class="text-white text-capitalize">Account Holder : {{user}}</h6>
+                    <h6 class="text-white">Account Number :</h6>
+                    <h6 class="text-white">Balance Amount : &#x20B9; 8243</h6>
+                    <span class="card__label   atmclick text-info">"Your banking needs, our top priority"</span>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <div class="col-lg-4 col-md-6 col-sm-12">
+
+        <div class="card mt-4">
+
+            <p style="color:rgba(255, 255, 255, 0.313);font-size: 15px;" class="mt-3">Add Money To Your Bank Account</p>
+            <form [formGroup]="depositForm" class="dform" action="">
+                <input formControlName="acno" id="ac1" name="acno" class=" mb-3 " required=""
+                    placeholder="Account Number">
+                <div class="valdiv"
+                    *ngIf="this.depositForm.get('acno')?.errors && this.depositForm.get('acno')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <input formControlName="psw" id="pw2" name="password" class=" mb-3" required="" type="password"
+                    placeholder="Password">
+                <div class="valdiv" *ngIf="this.depositForm.get('psw')?.errors && this.depositForm.get('psw')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <input formControlName="amnt" id="amt1" name="amnt" class=" mb-4" required="" placeholder="Amount">
+                <div class="valdiv"
+                    *ngIf="this.depositForm.get('amnt')?.errors && this.depositForm.get('amnt')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <hr>
+                <button (click)="deposit()" class="dbtn btn btn-success fs-2 mt-3">DEPOSIT</button>
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-4 col-md-6 col-sm-12">
+
+
+        <div class="card mt-4 card2">
+
+            <p style="color:rgba(255, 255, 255, 0.313);font-size: 15px;" class="mt-3 mb-4">Withdraw Money from Your Bank
+                Account</p>
+            <form [formGroup]="withdrawForm" class="dform" action="">
+                <input formControlName="acno1" name="acno2" id="ac2" class="d2 mb-3 " required=""
+                    placeholder="Account Number">
+                <div class="valdiv"
+                    *ngIf="this.withdrawForm.get('acno1')?.errors && this.withdrawForm.get('acno1')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <input formControlName="psw1" name="psw2" id="pw2" class="d2 mb-3" required="" type="password"
+                    placeholder="Password">
+                <div class="valdiv"
+                    *ngIf="this.withdrawForm.get('psw1')?.errors && this.withdrawForm.get('psw1')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <input formControlName="amnt1" name="amt2" id="amt2" class="d2 mb-4" required="" placeholder="Amount">
+                <div class="valdiv"
+                    *ngIf="this.withdrawForm.get('amnt1')?.errors && this.withdrawForm.get('amnt1')?.touched">
+                    <p class="text-start">Invalid Data</p>
+                </div>
+                <hr>
+                <button (click)="withdrew()" class="dbtn btn btn-danger fs-2 mt-3">WITHDRAW</button>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+</div>

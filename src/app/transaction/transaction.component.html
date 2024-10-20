@@ -1,0 +1,26 @@
+
+<div class="card container w-50 mt-2 p-3 text-center text-white " style="background-color: rgba(34, 107, 184, 0); font-size: 1em; border-radius: 20px;">
+
+    <table class="text-center w-100">
+        <thead class="border-bottom text-danger fs-5">
+            <tr >
+                <th class="">TYPE</th>
+                <th class="color-red">AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr class="border-bottom text-info " *ngFor="let i of transactionArray">
+                <td class="">{{i.Type}}</td>
+                <td class="">{{i.Amount}}</td>
+            </tr>
+           
+        </tbody>
+    </table>
+</div>
+
+<!-- <div class="card mt-4">
+
+    
+
+
+</div> -->

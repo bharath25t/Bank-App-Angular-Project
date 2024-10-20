@@ -1,0 +1,205 @@
+Angular
+-------
+
+NPM-Node package module
+
+install
+
+     -npm i  -g  @angular/cli@latest       ng v
+
+     project creation
+
+         -ng new projectname
+
+         running command
+           
+           -ng serve --open      ng serve --open
+
+
+           angular technologies
+
+        -HTML
+        -CSS
+        -TYPESCRIPT   --> strictly typed
+
+        number:any
+
+        transpiling - browser convert TS to JS while running
+
+npm i
+
+working cycle of angular component
+----------------------------------
+
+constructor  --> ngOnInit-->Other methods
+
+Data binding in Angular
+------------------------
+TS - component
+HTML - view
+
+1. one way binding
+------------------
+
+ 1.1 TS to HTML (component to view data sharing)
+
+      1.1.1--> string interpollation  -->  {{data}}
+      1.1.2--> property binding --> [property-name]="data"
+
+ 1.2 HTML to TS (view to component)
+
+      1.2.1  --> event binding (eventname)="method()"
+      1.2.2  --> $ (doller) event binding (eventname)="method($event)"
+      1.2.3  --> event binding whith template rendring variable  #variableName
+
+ 2.Two Way binding
+
+   2.1 ngModel  [(ngModel)]="variable"
+         -formsModule  -module used to apply ngModel    
+
+Path setting in angular
+----------------------
+
+path set in root module routing file
+each page need defferent paths
+landing page path is empty
+
+Redirection in angular
+---------------------
+
+method - navigateByUrl(path)
+class  - Router
+module - AppRoutingModule
+
+
+folder   - file - class - methods
+packages - module
+
+Dependancy Injection  (IMP)
+-------------------
+
+to use a method of class in another class
+
+in constructor
+
+   accessSpecifier reference: ClassName
+
+    access specifier -private / public
+    - private : can use the injecting class only in that class
+    - public  : can use the injecting class in other classess of that line 
+
+
+Angular Services
+----------------
+
+its a file in angular
+All components can access the content of service file
+
+create  --->     ng generate service filename   ==> ng g s filename
+
+
+Angular dierectives
+-------------------
+
+used to manipulate DOM 
+
+1.component dierectives
+
+2.Structual dierectives
+    - *ngFor
+    - *ngIf
+
+3.Atribute dierectives
+    - [ngClass]
+
+Form Validation in angular
+-------------------------
+    Form creation in angular
+        
+        1.template driven form
+        2.model driven form
+
+     Model Driven form
+     -----------------
+
+     -reactive form
+        -ReactiveFormsModule  - module used to build model form 
+        -FormBuilder          - class used to create model form 
+
+        -a model contain   -form group
+                           -array
+                           -controller
+
+Local Storage in angular
+-----------------------
+
+C - localStorage.setItem()
+R - localStorage.getItem()
+U - localStorage.setItem()
+D - localStorage.removeItem()
+
+
+Child Parent Communication In angular
+-------------------------------------
+
+      parent - child data sharing
+      ---------------------------
+        @Input()  -   decorator used to share data from parent to child
+
+      child - parent data sharing
+      ---------------------------
+          
+
+
+Date and time in angular
+------------------------
+
+Date - class used to access current data in angular
+
+Angular Pipes
+-------------
+
+used to convert data to another format
+
+Event Creation in Angular (user defined events)
+-------------------------
+   EventEmitter - class used to create events
+   
+   emit()  -method used to specify when the event happens
+
+
+
+API Creation in angular
+-----------------------
+
+HttpClientModule   - module
+HttpClient         - class
+
+   methods
+   -------
+
+   get post put patch delete 
+
+
+
+
+-----------------------------------------
+Asynchronous in JS   
+
+    promise   - then()
+              - catch()
+
+
+Asynchronous in TS        rxjs (reactive extension for js)
+         
+    observable - subscribe()
+               - catch()
+------------------------------------------               
+
+
+Headers Creation In Angular
+---------------------------
+
+HttpHeaders   -   class used to generate Headers
+
+

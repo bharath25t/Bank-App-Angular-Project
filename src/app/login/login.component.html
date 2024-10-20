@@ -1,0 +1,53 @@
+<div class="container-fluid">
+
+
+
+
+  <div class="row">
+
+
+    <div class=" col-lg-6 col-md-12 col-sm-12 col-12 ">
+
+      <app-homecard></app-homecard>
+
+    </div>
+
+    <div class="container col-lg-6 col-md-12  col-sm-12">
+      <input id="register_toggle" type="checkbox">
+      <div class="slider">
+        <form [formGroup]="loginForm" class="form">
+          <span class="title text-white">LOGIN</span>
+          <div class="form_control">
+            <input formControlName="acno" name="uname" id="u1" class="input" type="text" [placeholder]="data1">
+          </div>
+          <div class="valdiv" *ngIf="this.loginForm.get('acno')?.errors && this.loginForm.get('acno')?.touched">
+            <p class=" ms-2">Invalid account number. Please enter only numbers and try again. <span>(e.g 1000)</span>
+            </p>
+          </div>
+
+
+          <div class="form_control">
+            <input formControlName="psw" id="p1" name="passW" class="input" type="password" [placeholder]="data2">
+          </div>
+          <div class="valdiv" *ngIf="this.loginForm.get('psw')?.errors && this.loginForm.get('psw')?.touched">
+            <p class=" ms-2">Please enter your password. Special characters are not allowed. <span>(e.g abc123)</span>
+
+            </p>
+          </div>
+          <button (click)="login()" class="fs-5">Login</button>
+
+          <p class="text-white ">Dont have an account ? <a class="text-info" style="text-decoration:none ;"
+              href="register">Create account</a></p>
+
+        </form>
+
+
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</div>
