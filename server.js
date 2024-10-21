@@ -2,12 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/bank', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -15,30 +16,33 @@ mongoose.connect('mongodb://localhost:27017/bank', {
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
+// Mongoose schema for user data
 const userSchema = new mongoose.Schema({
-  acno: { type: String, required: true, unique: true }, 
+  acno: { type: String, required: true, unique: true },
   uname: { type: String, required: true },
   psw: { type: String, required: true },
-  balance: { type: Number, default: 0 }, 
-  transactions: { type: Array, default: [] } 
+  balance: { type: Number, default: 0 },
+  transactions: { type: Array, default: [] }
 });
 
-const User = mongoose.model('User', userSchema);
+// Mongoose models for register and login collections
+const Register = mongoose.model('Register', userSchema, 'register');
+const Login = mongoose.model('Login', userSchema, 'login');
 
 // Registration API
 app.post('/register', async (req, res) => {
   const { acno, uname, psw } = req.body;
 
-  // Check if the account number already exists
-  const userExists = await User.findOne({ acno });
+  const userExists = await Register.findOne({ acno });
   if (userExists) {
     return res.status(400).json({ message: 'Account number already exists' });
   }
 
-  // Create a new user and save to the database
-  const newUser = new User({ acno, uname, psw });
+  const newUser = new Register({ acno, uname, psw });
   try {
     await newUser.save();
+    const newLoginUser = new Login({ acno, uname, psw });
+    await newLoginUser.save();
     res.status(201).json({ message: 'Registration successful' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -48,14 +52,13 @@ app.post('/register', async (req, res) => {
 // Login API
 app.post('/login', async (req, res) => {
   const { acno, psw } = req.body;
-  
+
   try {
-    const user = await User.findOne({ acno, psw });
+    const user = await Login.findOne({ acno, psw });
     if (!user) {
       return res.status(401).json({ message: 'Invalid account number or password' });
     }
 
-    // Create a token
     const token = jwt.sign({ acno: user.acno }, 'your_jwt_secret', { expiresIn: '1h' });
     res.json({
       currentUser: user.uname,
@@ -73,12 +76,11 @@ app.post('/deposit', async (req, res) => {
   const { acno, psw, amnt } = req.body;
 
   try {
-    const user = await User.findOne({ acno, psw });
+    const user = await Register.findOne({ acno, psw });
     if (!user) {
       return res.status(401).json({ message: 'Invalid account number or password' });
     }
 
-    // Update the user's balance and record the transaction
     user.balance += Number(amnt);
     user.transactions.push({ type: 'Deposit', amount: amnt, date: new Date() });
     await user.save();
@@ -94,17 +96,15 @@ app.post('/withdrew', async (req, res) => {
   const { acno, psw, amnt } = req.body;
 
   try {
-    const user = await User.findOne({ acno, psw });
+    const user = await Register.findOne({ acno, psw });
     if (!user) {
       return res.status(401).json({ message: 'Invalid account number or password' });
     }
 
-    // Check if sufficient balance is available
     if (user.balance < Number(amnt)) {
       return res.status(400).json({ message: 'Insufficient balance' });
     }
 
-    // Update the user's balance and record the transaction
     user.balance -= Number(amnt);
     user.transactions.push({ type: 'Withdraw', amount: amnt, date: new Date() });
     await user.save();
@@ -120,7 +120,7 @@ app.post('/getTransaction', async (req, res) => {
   const { acno } = req.body;
 
   try {
-    const user = await User.findOne({ acno });
+    const user = await Register.findOne({ acno });
     if (!user) {
       return res.status(404).json({ message: 'Account not found' });
     }
@@ -136,9 +136,14 @@ app.delete('/deleteacc/:acno', async (req, res) => {
   const { acno } = req.params;
 
   try {
-    const result = await User.deleteOne({ acno });
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Account not found' });
+    const registerResult = await Register.deleteOne({ acno });
+    const loginResult = await Login.deleteOne({ acno });
+
+    if (registerResult.deletedCount === 0) {
+      return res.status(404).json({ message: 'Account not found in register collection' });
+    }
+    if (loginResult.deletedCount === 0) {
+      return res.status(404).json({ message: 'Account not found in login collection' });
     }
 
     res.json({ message: 'Account deleted successfully' });

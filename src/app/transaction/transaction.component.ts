@@ -8,18 +8,30 @@ import { DataService } from '../Services/data.service';
 })
 export class TransactionComponent {
 
-  transactionArray: any
+  transactionArray: any;  // To store the transaction data
 
   constructor(private ds: DataService) {
-    this.ds.getTransaction(JSON.parse(localStorage.getItem("currentAcno") || "")).subscribe(
-      (result: any) => {
-        this.transactionArray = result.transaction
-        console.log(this.transactionArray);
-        
-      })
+    this.getTransactionData();
   }
 
+  // Method to get transaction data from the server
+  getTransactionData() {
+    const currentAcno = JSON.parse(localStorage.getItem("currentAcno") || "");  // Get current account number from local storage
+
+    if (currentAcno) {
+      this.ds.getTransaction(currentAcno).subscribe(
+        (result: any) => {
+          // Handle success
+          this.transactionArray = result.transactions;  // Store transaction array from the result
+          console.log(this.transactionArray);
+        },
+        (error) => {
+          // Handle error
+          alert(error.error.message);  // Show error message if there's an issue
+        }
+      );
+    } else {
+      alert("No account number found in local storage");  // Error handling if account number is missing
+    }
+  }
 }
-
-
-//need to revisit
